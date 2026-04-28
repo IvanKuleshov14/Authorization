@@ -1,6 +1,7 @@
 <Solution>
   <Project Path="Application/Application.csproj" />
   <Project Path="Authorization/Authorization.csproj" />
+  <Project Path="Contracts/Contracts.csproj" />
   <Project Path="Domain/Domain.csproj" />
   <Project Path="Infrastructure/Infrastructure.csproj" />
   <Project Path="Presenters/Presenters.csproj" />
