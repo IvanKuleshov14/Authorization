@@ -1,4 +1,14 @@
+version: '3.4'
+
 services:
+  authorization:
+    image: ${DOCKER_REGISTRY-}authorizationapi
+    build:
+      context: .
+      dockerfile: Authorization/Dockerfile
+    depends_on:
+      - db
+
   db:
     image: postgres:latest
     container_name: auth_postgres
