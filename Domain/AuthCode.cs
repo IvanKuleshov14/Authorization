@@ -6,7 +6,7 @@
 
         public string Code { get; set; } = string.Empty;
 
-        public DateTime ExperiTime { get; set; }
+        public DateTime ExpiryTime { get; set; }
 
         public bool IsUsed { get; set; }
 
