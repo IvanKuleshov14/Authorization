@@ -2,6 +2,22 @@
 {
     public class AuthCode
     {
+        public AuthCode(
+            Guid id,
+            Guid userId,
+            string code,
+            DateTime expiryTime,
+            bool isUsed
+            )
+        {
+            Id = id;
+            UserId = userId;
+            Code = code;
+            ExpiryTime = expiryTime;
+            IsUsed = isUsed;
+        }
+
+
         public Guid Id { get; set; }
 
         public string Code { get; set; } = string.Empty;
