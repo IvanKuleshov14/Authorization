@@ -10,7 +10,8 @@ namespace Application.Users
         {
             _usersRepository = usersRepository;
         }
-        public async Task<User> GetByIdentityAsync(string identity, string provider)
+
+        public async Task<User> GetByIdentityOrCreateAsync(string identity, string provider)
         {
             var user = await _usersRepository.GetByIdentityAsync(identity);
             if (user == null)
@@ -33,6 +34,16 @@ namespace Application.Users
                 await _usersRepository.AddAsync(user);
             }
 
+            return user;
+        }
+
+        public async Task<User> GetByIdentityAsync(string identity)
+        {
+            var user = await _usersRepository.GetByIdentityAsync(identity);
+            if(user == null)
+            {
+                throw new Exception("Пользователь не найден");
+            }
             return user;
         }
     }

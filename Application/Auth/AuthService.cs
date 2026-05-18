@@ -37,7 +37,7 @@ namespace Application.Auth
                 }
             }
 
-            var user = await _usersService.GetByIdentityAsync(identity, provider);
+            var user = await _usersService.GetByIdentityOrCreateAsync(identity, provider);
             if(user == null)
             {
                 return false;
@@ -62,9 +62,35 @@ namespace Application.Auth
             return false;
         }
 
-        public Task<string> VerifyCodeAsync(string identity, string code)
+        public async Task<string> VerifyCodeAsync(string identity, string code)
         {
-            throw new NotImplementedException();
+            var user = await _usersService.GetByIdentityAsync(identity);
+            Domain.AuthCode lastCode = await _authCodesService.GetLastCodeByUserIdAsync(user.Id);
+
+            if(lastCode.Code != code)
+            {
+                throw new Exception("Неверный код");
+            }
+            if (DateTime.UtcNow > lastCode.ExpiryTime)
+            {
+                throw new Exception("Срок действия кода истек");
+            }
+            if(lastCode.IsUsed == true)
+            {
+                throw new Exception("Код устарел");
+            }
+
+            lastCode.IsUsed = true;
+            await _authCodesService.UpdateAsync(lastCode);
+
+            var token = GenerateJwtToken(user);
+
+            return token;
+        }
+
+        private string GenerateJwtToken(User user)
+        {
+            return "токен";
         }
     }
 }

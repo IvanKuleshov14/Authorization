@@ -22,5 +22,20 @@ namespace Application.AuthCode
 
             await _authCodesRepository.AddAsync(authCode);
         }
+
+        public async Task<Domain.AuthCode> GetLastCodeByUserIdAsync(Guid userId)
+        {
+            var lastCode = await _authCodesRepository.GetLastCodeByUderIdAsync(userId);
+            if(lastCode == null)
+            {
+                throw new Exception("Код не найден");
+            }
+            return lastCode;
+        }
+
+        public async Task UpdateAsync(Domain.AuthCode code)
+        {
+            await _authCodesRepository.UpdateAsync(code);
+        }
     }
 }
