@@ -1,13 +1,17 @@
-version: '3.4'
-
+# version: '3.4'
 services:
   authorization:
     image: ${DOCKER_REGISTRY-}authorizationapi
     build:
       context: .
       dockerfile: Authorization/Dockerfile
+    ports:
+      - "5000:8080"
     depends_on:
       - db
+    environment:
+      - DB_CONNECTION_STRING=Host=db;Database=auth_db;Username=postgres;Password=${DB_PASSWORD}
+      - BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
 
   db:
     image: postgres:latest

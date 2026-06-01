@@ -14,13 +14,14 @@ namespace Application
 {
     public static class DI
     {
-        public static IServiceCollection AddApplication(this IServiceCollection services)
+        public static IServiceCollection AddApplication(this IServiceCollection services, string telegramToken)
         {
             services.AddScoped<IUsersService, UsersService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IAuthCodesService, AuthCodesService>();
             services.AddScoped<IEmailService, EmailService>();
-            services.AddScoped<ITelegramService, TelegramService>();
+
+            services.AddScoped<ITelegramService>(sp => new TelegramService(telegramToken));
             return services;
         }
     }
