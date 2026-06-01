@@ -25,8 +25,7 @@ namespace Infrastructure.Repositories
             long.TryParse(identity, out long tgId);
 
             return await _dbContext.Users.FirstOrDefaultAsync(
-                u => (tgId != 0 && u.TelegramId == tgId) || u.Email == identity
-                );
+                u => (tgId != 0 && u.TelegramId == tgId) || u.Email == identity);
         }
     }
 }
