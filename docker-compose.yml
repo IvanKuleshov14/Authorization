@@ -11,7 +11,7 @@ services:
       - db
     environment:
       - DB_CONNECTION_STRING=Host=db;Database=auth_db;Username=postgres;Password=${DB_PASSWORD}
-      - BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
 
   db:
     image: postgres:latest
