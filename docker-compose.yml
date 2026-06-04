@@ -11,15 +11,15 @@ services:
       - db
     environment:
       - DB_CONNECTION_STRING=Host=db;Database=auth_db;Username=postgres;Password=${DB_PASSWORD}
-      - BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
 
   db:
     image: postgres:latest
     container_name: auth_postgres
     restart: always
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: mypassword
-      POSTGRES_DB: auth_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mypassword
+      - POSTGRES_DB=auth_db
     ports:
       - "5432:5432"
