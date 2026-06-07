@@ -14,7 +14,7 @@ namespace Presenters
             _authService = authService;
         }
 
-        [HttpPost]
+        [HttpPost("send-code")]
         public async Task<IActionResult> SendCode([FromBody] SendCodeDTO request)
         {
             var result = await _authService.SendCodeAsync(request.Identity, request.Provider);
@@ -28,12 +28,12 @@ namespace Presenters
             }
         }
 
-        [HttpPost]
+        [HttpPost("verify-code")]
         public async Task<IActionResult> VerifyCode([FromBody] VerifyCodeDTO request)
         {
             if(request == null || string.IsNullOrEmpty(request.Code))
             {
-                return BadRequest("Данныез запроса не могут быть пустыми");
+                return BadRequest("Данные запроса не могут быть пустыми");
             }
 
             try

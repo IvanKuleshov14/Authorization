@@ -28,7 +28,7 @@ namespace Application.AuthCode
             var lastCode = await _authCodesRepository.GetLastCodeByUderIdAsync(userId);
             if(lastCode == null)
             {
-                throw new Exception("Код не найден");
+                throw new Exception("Код не запрашивался");
             }
             return lastCode;
         }
