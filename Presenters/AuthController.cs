@@ -27,5 +27,24 @@ namespace Presenters
                 return BadRequest("Не удалось отправить код");
             }
         }
+
+        [HttpPost]
+        public async Task<IActionResult> VerifyCode([FromBody] VerifyCodeDTO request)
+        {
+            if(request == null || string.IsNullOrEmpty(request.Code))
+            {
+                return BadRequest("Данныез запроса не могут быть пустыми");
+            }
+
+            try
+            {
+                var token = await _authService.VerifyCodeAsync(request.Identity, request.Code);
+                return Ok(token);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

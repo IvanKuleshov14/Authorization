@@ -69,7 +69,16 @@ namespace Application.Auth
         public async Task<string> VerifyCodeAsync(string identity, string code)
         {
             var user = await _usersService.GetByIdentityAsync(identity);
+            if (user == null)
+            {
+                throw new Exception("Пользователь не найден");
+            }
+
             Domain.AuthCode lastCode = await _authCodesService.GetLastCodeByUserIdAsync(user.Id);
+            if(lastCode == null)
+            {
+                throw new Exception("Код не запрашивался");
+            }
 
             if (DateTime.UtcNow > lastCode.ExpiryTime)
             {
@@ -88,7 +97,6 @@ namespace Application.Auth
             await _authCodesService.UpdateAsync(lastCode);
 
             var token = GenerateJwtToken(user);
-
             return token;
         }
 

@@ -40,10 +40,6 @@ namespace Application.Users
         public async Task<User> GetByIdentityAsync(string identity)
         {
             var user = await _usersRepository.GetByIdentityAsync(identity);
-            if(user == null)
-            {
-                throw new Exception("Пользователь не найден");
-            }
             return user;
         }
     }
