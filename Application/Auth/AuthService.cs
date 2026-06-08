@@ -31,20 +31,20 @@ namespace Application.Auth
             _telegramService = telegramService;
         }
 
-        public async Task<bool> SendCodeAsync(string identity, string provider)
+        public async Task<(bool isSuccess, string Message)> SendCodeAsync(string identity, string provider)
         {
             if(provider.Equals("Telegram", StringComparison.OrdinalIgnoreCase))
             {
                 if (!long.TryParse(identity, out _))
                 {
-                    return false;
+                    return (false, "TelegramId должен содержать только числа");
                 }
             }
 
             var user = await _usersService.GetByIdentityOrCreateAsync(identity, provider);
             if(user == null)
             {
-                return false;
+                return (false, "Провайдер может быть исключительно только \"Email\" или \"Telegram\" (регистр не учитывается)");
             }
 
             string code = RandomNumberGenerator.GetInt32(100000, 1000000).ToString();
@@ -54,22 +54,31 @@ namespace Application.Auth
             if (provider.Equals("Email", StringComparison.OrdinalIgnoreCase))
             {
                 await _emailService.SendCodeAsync(identity, code);
-                return true;
+                return (true, "Код отправлен на Email");
             }
             else if (provider.Equals("Telegram", StringComparison.OrdinalIgnoreCase))
             {
                 long tgId = long.Parse(identity);
                 await _telegramService.SendCodeAsync(tgId, code);
-                return true;
+                return (true, "Код отправлен в Telegram");
             }
 
-            return false;
+            return (false, "Не удалось отправить код");
         }
 
         public async Task<string> VerifyCodeAsync(string identity, string code)
         {
             var user = await _usersService.GetByIdentityAsync(identity);
+            if (user == null)
+            {
+                throw new Exception("Пользователь не найден");
+            }
+
             Domain.AuthCode lastCode = await _authCodesService.GetLastCodeByUserIdAsync(user.Id);
+            if(lastCode == null)
+            {
+                throw new Exception("Код не запрашивался");
+            }
 
             if (DateTime.UtcNow > lastCode.ExpiryTime)
             {
@@ -88,7 +97,6 @@ namespace Application.Auth
             await _authCodesService.UpdateAsync(lastCode);
 
             var token = GenerateJwtToken(user);
-
             return token;
         }
 

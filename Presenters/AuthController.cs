@@ -14,17 +14,36 @@ namespace Presenters
             _authService = authService;
         }
 
-        [HttpPost]
+        [HttpPost("send-code")]
         public async Task<IActionResult> SendCode([FromBody] SendCodeDTO request)
         {
             var result = await _authService.SendCodeAsync(request.Identity, request.Provider);
-            if (result)
+            if (result.isSuccess)
             {
-                return Ok("Код отправлен");
+                return Ok($"{result.Message}");
             }
             else
             {
-                return BadRequest("Не удалось отправить код");
+                return BadRequest($"{result.Message}");
+            }
+        }
+
+        [HttpPost("verify-code")]
+        public async Task<IActionResult> VerifyCode([FromBody] VerifyCodeDTO request)
+        {
+            if(request == null || string.IsNullOrEmpty(request.Code))
+            {
+                return BadRequest("Данные запроса не могут быть пустыми");
+            }
+
+            try
+            {
+                var token = await _authService.VerifyCodeAsync(request.Identity, request.Code);
+                return Ok(token);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
     }
