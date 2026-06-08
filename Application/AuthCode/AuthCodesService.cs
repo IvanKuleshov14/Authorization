@@ -16,7 +16,7 @@ namespace Application.AuthCode
                 id,
                 userId,
                 code,
-                DateTime.UtcNow.AddMinutes(5),
+                DateTime.UtcNow.AddMinutes(3),
                 false
                 );
 
@@ -26,11 +26,7 @@ namespace Application.AuthCode
         public async Task<Domain.AuthCode> GetLastCodeByUserIdAsync(Guid userId)
         {
             var lastCode = await _authCodesRepository.GetLastCodeByUderIdAsync(userId);
-            if(lastCode == null)
-            {
-                throw new Exception("Код не запрашивался");
-            }
-            return lastCode;
+            return lastCode!;
         }
 
         public async Task UpdateAsync(Domain.AuthCode code)

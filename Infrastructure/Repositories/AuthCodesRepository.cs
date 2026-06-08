@@ -21,7 +21,7 @@ namespace Infrastructure.Repositories
 
         public async Task<AuthCode?> GetLastCodeByUderIdAsync(Guid userId)
         {
-            return await _dbContext.AuthCodes.Where(c => c.UserId == userId && c.IsUsed == false)
+            return await _dbContext.AuthCodes.Where(c => c.UserId == userId)
                 .OrderByDescending(c => c.ExpiryTime)
                 .FirstOrDefaultAsync();
         }

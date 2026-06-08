@@ -30,6 +30,10 @@ namespace Application.Users
                     long tgId = long.Parse(identity);
                     user.TelegramId = tgId;
                 }
+                else
+                {
+                    return null!;
+                }
 
                 await _usersRepository.AddAsync(user);
             }
@@ -40,7 +44,7 @@ namespace Application.Users
         public async Task<User> GetByIdentityAsync(string identity)
         {
             var user = await _usersRepository.GetByIdentityAsync(identity);
-            return user;
+            return user!;
         }
     }
 }

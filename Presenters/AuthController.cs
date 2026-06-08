@@ -18,13 +18,13 @@ namespace Presenters
         public async Task<IActionResult> SendCode([FromBody] SendCodeDTO request)
         {
             var result = await _authService.SendCodeAsync(request.Identity, request.Provider);
-            if (result)
+            if (result.isSuccess)
             {
-                return Ok("Код отправлен");
+                return Ok($"{result.Message}");
             }
             else
             {
-                return BadRequest("Не удалось отправить код");
+                return BadRequest($"{result.Message}");
             }
         }
 
