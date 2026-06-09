@@ -50,6 +50,7 @@ namespace Presenters
         /// Адрес электронной почты или TelegramId пользователя, указанный при запросе кода <br/>
         /// <br/> <b> code: </b> <br/>
         /// Шестизначный код, присланный на электронную почту или в телеграм <br/>
+        /// Если выбран провайдер Email — перейдите в интерфейс Mailpit (http://localhost:8025) <br/>
         /// </param>
         /// <returns></returns>
         [HttpPost("verify-code")]
