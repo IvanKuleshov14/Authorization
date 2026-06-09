@@ -14,7 +14,7 @@ namespace Application.Email
             {
                 From = new MailAddress("noreply@authservice.local", "Auth Service"),
                 Subject = "Код подтверждения",
-                Body = $"Код подтверждения: {code}"
+                Body = $"Код подтверждения: {code}\n*Код действителен 3 минуты"
             };
 
             mailMessage.To.Add(identity);

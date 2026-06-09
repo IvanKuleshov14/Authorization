@@ -14,6 +14,19 @@ namespace Presenters
             _authService = authService;
         }
 
+        /// <summary>
+        /// Запрос кода
+        /// </summary>
+        /// <param name="request">
+        /// <b> Данные запроса </b>
+        /// <br/> <b>identity:</b> <br/>
+        /// Адрес электронной почты или TelegramId пользователя<br/>
+        /// <br/> <b>provider:</b> <br/>
+        /// Email - для отправки кода на почту <br/>
+        /// Telegram - для отправки кода в телеграм <br/>
+        /// *регистр не учитывается
+        /// </param>
+        /// <returns></returns>
         [HttpPost("send-code")]
         public async Task<IActionResult> SendCode([FromBody] SendCodeDTO request)
         {
@@ -28,6 +41,17 @@ namespace Presenters
             }
         }
 
+        /// <summary>
+        /// Проверка кода
+        /// </summary>
+        /// <param name="request">
+        /// <b> Данные для запроса </b>
+        /// <br/> <b> identity: </b> <br/>
+        /// Адрес электронной почты или TelegramId пользователя, указанный при запросе кода <br/>
+        /// <br/> <b> code: </b> <br/>
+        /// Шестизначный код, присланный на электронную почту или в телеграм <br/>
+        /// </param>
+        /// <returns></returns>
         [HttpPost("verify-code")]
         public async Task<IActionResult> VerifyCode([FromBody] VerifyCodeDTO request)
         {
