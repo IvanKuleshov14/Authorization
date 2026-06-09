@@ -10,6 +10,8 @@ services:
     depends_on:
       - db
     environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
       - DB_CONNECTION_STRING=Host=db;Database=auth_db;Username=postgres;Password=${DB_PASSWORD}
       - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
 
@@ -19,7 +21,7 @@ services:
     restart: always
     environment:
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=mypassword
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=auth_db
     ports:
       - "5432:5432"
