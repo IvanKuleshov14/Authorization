@@ -16,7 +16,7 @@ namespace Application.Telegram
         {
             await _botClient.SendMessage(
                 chatId: identity,
-                text: $"Код подтверждения: {code}"
+                text: $"Код подтверждения: {code}\n*Код действителен 3 минуты"
                 );
         }
     }

@@ -4,6 +4,8 @@ using Application.Telegram.Interfaces;
 using Infrastructure;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors();
@@ -12,7 +14,6 @@ var ConnectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<AuthorizationDbContext>(options => options.UseNpgsql(ConnectionString));
 
 builder.Services.AddControllers();
-builder.Services.AddSwaggerGen();
 builder.Services.AddOpenApi();
 
 var telegramToken = builder.Configuration["TELEGRAM_BOT_TOKEN"];
@@ -23,6 +24,19 @@ if (string.IsNullOrEmpty(telegramToken))
 
 builder.Services.AddApplication(telegramToken);
 builder.Services.AddInfrastructure();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Auth API",
+        Version = "v1",
+        Description = "Модуль двухфакторной аутентификации (Email/Telegram)"
+    });
+
+    var presentersXml = "Presenters.xml";
+    var presentersXmlPath = Path.Combine(AppContext.BaseDirectory, presentersXml);
+    if (File.Exists(presentersXmlPath)) options.IncludeXmlComments(presentersXmlPath);
+});
 
 var app = builder.Build();
 
